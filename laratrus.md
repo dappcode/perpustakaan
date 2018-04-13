@@ -18,3 +18,6 @@ Documentation = http://laratrust.readthedocs.io/en/5.0/installation.html
 
 3. publish all configuration `php artisan vendor:publish --tag="laratrust"`
 
+### How to make seeder = 
+
+`php artisan make:seeder 'NamaSeeder'`
