@@ -22,7 +22,12 @@
                         <div class="form-group row">
                             <label for="text" class="col-sm-2 col-form-label">Author Name :</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="name" placeholder="Input Author Name...">
+                                <input type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" id="name" name="name" placeholder="Input Author Name..." value="{{ old('name') }}" autofocus>
+                                @if ($errors->has('name'))
+                                    <span class="invalid-feedback">
+                                        <strong> {{ $errors->first('name') }} </strong>
+                                    </span>
+                                @endif
                             </div>
                         </div>
                         <div class="form-group">
@@ -30,10 +35,7 @@
                                 <button class="btn btn-primary float-right" type="submit">Save</button>
                             </div>
                         </div>
-
-                    
                     </form>
-
                 </div>
             </div>
         </div>
