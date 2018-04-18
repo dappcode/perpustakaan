@@ -21,11 +21,15 @@
                 </div>
                 <div class="card-body">
                 {!! $html->table([ 'class' => 'table-striped ']) !!}
+                
                 </div>
             </div>
         </div>
     </div>
 </div>
+<!-- Modal -->
+
+
 @endsection
 
 @push('scripts')

@@ -8,18 +8,19 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('home')}}">Beranda</a></li>
                     <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('authors.index')}}">Authors</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Add Author</li>
+                    <li class="breadcrumb-item active" aria-current="page">Edit Author</li>
                     
                 </ol>
             </nav>
             <div class="card">
-                <div class="card-header"> Add Author 
+                <div class="card-header"> Edit Author 
                 </div>
 
                 <div class="card-body">
-                    <form class="form-horizontal" action=" {{ route('authors.store') }} " method="post">
+                    <form class="form-horizontal" action=" {{ route('authors.update', $author->id) }} " method="post">
                         @csrf
-                        @include('authors._form')
+                        @method('PATCH')
+                       @include('authors._form')
                     </form>
                 </div>
             </div>
