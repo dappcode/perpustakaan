@@ -29,6 +29,7 @@ class AuthorsController extends Controller
                             'edit_url' => route('authors.edit', $author->id),
                             'detail_url' => route('authors.show', $author->id),
                             'delete_url' => route('authors.destroy', $author->id),
+                            'confirm_message' => 'Yakin akan menghapus ' . $author->name,
                         ]);
                     })->toJson();
         }

@@ -91,6 +91,9 @@
     {{-- DataTables --}}
     <script src="{{ asset('js/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
+
+    {{-- untuk pop up js --}}
+    <script src="{{ asset('js/custom.js') }}"></script>
     @stack('scripts')
 </body>
 </html>
