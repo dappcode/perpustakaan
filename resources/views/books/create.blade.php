@@ -15,10 +15,9 @@
             <div class="card">
                 <div class="card-header"> Add Books 
                 </div>
-
+{{-- {{dump($errors)}} --}}
                 <div class="card-body">
-                    <form class="form-horizontal" action=" {{ route('books.store') }} " method="post" enctype="multipart/form-data
-                    ">
+                    <form class="form-horizontal" action=" {{ route('books.store') }} " method="post" enctype="multipart/form-data">
                         @csrf
 
                         <div class="form-group row">
@@ -51,10 +50,10 @@
                         <div class="form-group row">
                             <label for="text" class="col-sm-2 col-form-label">Amounts of Books :</label>
                             <div class="col-sm-10">
-                                <input type="number" class="form-control{{ $errors->has('amount') ? ' is-invalid' : '' }}" id="title" name="title" placeholder="Amounts of Books..." value="{{ old('amount') }}" autofocus>
-                                @if ($errors->has('title'))
+                                <input type="number" class="form-control{{ $errors->has('amount') ? ' is-invalid' : '' }}" id="amount" name="amount" placeholder="Amounts of Books..." value="{{ old('amount') }}" autofocus>
+                                @if ($errors->has('amount'))
                                     <span class="invalid-feedback">
-                                        <strong> {{ $errors->first('title') }} </strong>
+                                        <strong> {{ $errors->first('amount') }} </strong>
                                     </span>
                                 @endif
                             </div>
@@ -62,7 +61,15 @@
                         <div class="form-group row">
                             <label for="text" class="col-sm-2 col-form-label">Cover of Book :</label>
                             <div class="col-sm-10">
-                                <input type="file" class="form-control" id="cover" name="cover" value="{{ old('cover') }}" autofocus>
+                                <div class="custom-file">
+                                    <input type="file" id="cover" class="custom-file-input" id="cover" name="cover" value="{{ old('cover') }}" autofocus>
+                                    <label class="custom-file-label" for="customFile">Choose image</label>
+                                </div>
+                                @if ($errors->has('cover'))
+                                    <span class="invalid-feedback">
+                                        <strong> {{ $errors->first('cover') }} </strong>
+                                    </span>
+                                @endif
                             </div>
                         </div>
                         <div class="form-group">

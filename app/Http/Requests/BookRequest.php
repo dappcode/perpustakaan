@@ -28,9 +28,9 @@ class BookRequest extends FormRequest
             case 'POST':
                 return [
                     'title'     => 'required|unique:books,title',
-                    'author_id' => 'required|exists:authors,id',
+                    'author_id' => 'required|exists:authors,id', // -> untuk mencek idnya harus ada di tabel author
                     'amount'    => 'required|numeric',
-                    'cover'     => 'image|max:2048'
+                    'cover'     => 'image|max:2048',
                 ];       
                 break;
                 

@@ -2,7 +2,11 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content bg-danger text-white">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Delete Data <strong>  </strong></h5>
+                <h5 class="modal-title" id="exampleModalLabel">Delete Data 
+                    {{-- <strong> 
+                        @if (Route::is('books.destroy')){{ $book->title }} @else {{ $authors->name }} @endif 
+                    </strong> --}}
+                </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>

@@ -64,7 +64,33 @@ class BooksController extends Controller
      */
     public function store(BookRequest $request)
     {
-        //
+        $book = Book::create($request->except('cover')); // -> Kecuali cover maksudnya
+
+        // Cek jika user mengupload file
+        if ($request->hasFile('cover')) {
+            // ambil file yang di upload
+            $upload_image = $request->file('cover');
+
+            // mengambil extension file
+            $extension = $upload_image->getClientOriginalExtension();
+
+            // membuat nama file secara acak untuk menghindari duplikasi nama gambar 
+            $filename = md5(time()) . '.' . $extension;
+
+            // simpan gambar ke folder public/cover
+            $destinationPath = public_path() . DIRECTORY_SEPARATOR . 'cover';
+
+            $upload_image->move($destinationPath, $filename);
+
+            // simpan filename ke database
+            $book->cover = $filename;
+            $book->save();
+        }
+
+        return redirect()->route('books.index')->with('flash_notification', [
+            'level'     => 'success',
+            'message'   => 'Berhasil menyimpan buku dengan judul '.$book->title,
+        ]);
     }
 
     /**
