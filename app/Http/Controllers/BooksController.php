@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Yajra\DataTables\Html\Builder;
 use App\Http\Requests\BookRequest;
+use Illuminate\Support\Facades\File;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 class BooksController extends Controller
 {
@@ -101,7 +103,7 @@ class BooksController extends Controller
      */
     public function show(Book $book)
     {
-        //
+        return view('books.show', compact('book'));
     }
 
     /**
@@ -112,7 +114,9 @@ class BooksController extends Controller
      */
     public function edit(Book $book)
     {
-        //
+        $authors = Author::all();
+        
+        return view('books.edit', compact('book', 'authors'));
     }
 
     /**
@@ -122,9 +126,37 @@ class BooksController extends Controller
      * @param  \App\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Book $book)
+    public function update(BookRequest $request, Book $book)
     {
-        //
+        $book->update($request->all());
+
+        if ($request->hasFile('cover')) {
+            $upload_image       = $request->file('cover');
+            $extension          = $upload_image->getClientOriginalExtension();
+
+            $filename           = md5(time()) . '.' . $extension;
+            $destinationPath    = public_path() . DIRECTORY_SEPARATOR . 'cover';
+
+            // hapus file ynag lama dan ganti dengan file yang baru
+            if ($book->cover) {
+                $old_img    = $book->cover;
+                $filePath   = public_path() . DIRECTORY_SEPARATOR . 'cover' . DIRECTORY_SEPARATOR . $book->cover;
+
+                try {
+                    File::delete($filePath);
+                } catch (FileNotFoundException $e) {
+
+                }
+
+                $book->cover = $filename;
+                $book->save();
+            }
+        }
+
+        return redirect()->route('books.index')->with('flash_notification', [
+            'level'     => 'success',
+            'message'   => 'Berhasil Memperbarui buku '.$book->title,
+        ]);
     }
 
     /**
@@ -135,6 +167,28 @@ class BooksController extends Controller
      */
     public function destroy(Book $book)
     {
-        //
+        
+        if ($book->cover) {
+            $old_img    = $book->cover;
+            $filePath   = public_path() . DIRECTORY_SEPARATOR . 'cover' . DIRECTORY_SEPARATOR . $book->cover;
+            
+            try {
+                File::delete($filePath);
+            } catch (FileNotFoundException $e) {
+
+            }
+            
+        
+        }
+
+        if (!$book->delete()) {
+            return redirect()->back();
+        }
+        
+        
+        return redirect()->route('books.index')->with('flash_notification', [
+            'level' => 'danger',
+            'message' => 'Berhasil Menghapus Data <strong class="text-primary">'.$book->title.'</strong>'
+        ]);
     }
 }

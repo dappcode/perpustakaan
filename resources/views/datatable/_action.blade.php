@@ -8,4 +8,4 @@
     {{-- <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Delete</button> --}}
 </div>
 {{-- </form> --}}
-@include('authors._modal')
+@include('datatable._modal')

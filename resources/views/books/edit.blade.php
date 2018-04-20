@@ -8,22 +8,23 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('home')}}">Beranda</a></li>
                     <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('books.index')}}">Books</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Add Books</li>
+                    <li class="breadcrumb-item active" aria-current="page">Edit Books</li>
                     
                 </ol>
             </nav>
             <div class="card">
-                <div class="card-header"> Add Books 
+                <div class="card-header"> Edit Books 
                 </div>
 {{-- {{dump($errors)}} --}}
                 <div class="card-body">
-                    <form class="form-horizontal" action=" {{ route('books.store') }} " method="post" enctype="multipart/form-data">
+                    <form class="form-horizontal" action=" {{ route('books.update', $book->id) }} " method="post" enctype="multipart/form-data">
                         @csrf
+                        @method('PATCH')
 
                         <div class="form-group row">
                             <label for="text" class="col-sm-2 col-form-label">Book Title :</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control{{ $errors->has('title') ? ' is-invalid' : '' }}" id="title" name="title" placeholder="Input Book title..." value="{{ old('title') }}" autofocus>
+                                <input type="text" class="form-control{{ $errors->has('title') ? ' is-invalid' : '' }}" id="title" name="title" value="{{ $book->title }}" autofocus>
                                 @if ($errors->has('title'))
                                     <span class="invalid-feedback">
                                         <strong> {{ $errors->first('title') }} </strong>
@@ -34,10 +35,14 @@
                         <div class="form-group row">
                             <label for="text" class="col-sm-2 col-form-label">Author Name :</label>
                             <div class="col-sm-10">
-                                <select class="custom-select form-control js-selectize {{ $errors->has('amount') ? ' is-invalid' : '' }}" name="author_id" id="inputGroupSelect01">
-                                <option selected>Choose Authors...</option>
+                                <select class="custom-select form-control js-selectize {{ $errors->has('author_id') ? ' is-invalid' : '' }}" name="author_id" id="inputGroupSelect01">
                                 @foreach ($authors as $author)
-                                    <option value=" {{ $author->id }}"> {{ $author->name }} </option>
+                                    <option value="{{ $author->id }}" 
+                                        @if($book->author_id == $author->id) 
+                                            selected
+                                        @endif> 
+                                        {{ $author->name }} 
+                                    </option>
                                 @endforeach    
                                 </select>
                                 @if ($errors->has('author_id'))
@@ -50,7 +55,7 @@
                         <div class="form-group row">
                             <label for="text" class="col-sm-2 col-form-label">Amounts of Books :</label>
                             <div class="col-sm-10">
-                                <input type="number" class="form-control{{ $errors->has('amount') ? ' is-invalid' : '' }}" id="amount" name="amount" placeholder="Amounts of Books..." value="{{ old('amount') }}" autofocus>
+                                <input type="number" class="form-control{{ $errors->has('amount') ? ' is-invalid' : '' }}" id="amount" name="amount" value="{{ $book->amount }}">
                                 @if ($errors->has('amount'))
                                     <span class="invalid-feedback">
                                         <strong> {{ $errors->first('amount') }} </strong>
@@ -62,8 +67,13 @@
                             <label for="text" class="col-sm-2 col-form-label">Cover of Book :</label>
                             <div class="col-sm-10">
                                 <div class="custom-file">
-                                    <input type="file" id="cover" class="custom-file-input" id="cover" name="cover" value="{{ old('cover') }}" autofocus>
+                                    <input type="file" id="cover" class="custom-file-input" id="cover" name="cover" value="{{ $book->cover }}">
                                     <label class="custom-file-label" for="customFile">Choose image</label>
+                                    @if ($book->cover)
+                                    <div class="card" style="width: 18rem;">
+                                        <img src="{{ asset('cover/'.$book->cover) }}" class="card-img-top" alt="{{ $book->title }}">
+                                    </div>
+                                    @endif
                                 </div>
                                 @if ($errors->has('cover'))
                                     <span class="invalid-feedback">
@@ -72,6 +82,8 @@
                                 @endif
                             </div>
                         </div>
+
+
                         <div class="form-group">
                             <div class="col-md-12 col-md-offset-2">
                                 <button class="btn btn-primary float-right" type="submit">Save</button>

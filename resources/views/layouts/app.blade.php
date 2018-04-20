@@ -18,6 +18,7 @@
     <link href="{{ asset('css/fontawesome-all.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/selectize.bootstrap4.css') }}" rel="stylesheet">
     <link href="{{ asset('css/jquery.dataTables.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
@@ -96,6 +97,7 @@
     <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
 
     {{-- untuk pop up js --}}
+    <script src="{{ asset('js/selectize.min.js') }}"></script>
     <script src="{{ asset('js/custom.js') }}"></script>
     @stack('scripts')
 </body>
