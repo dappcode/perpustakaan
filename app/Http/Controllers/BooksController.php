@@ -2,18 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use Session;
+// use Session;
 use App\Author;
 use App\Book;
+use App\BorrowLog;
 use Illuminate\Http\Request;
+use App\Exceptions\BookException;
 use Yajra\DataTables\DataTables;
 use Yajra\DataTables\Html\Builder;
 use App\Http\Requests\BookRequest;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 class BooksController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['auth', 'role:member'])->only(['borrow']);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -190,5 +199,28 @@ class BooksController extends Controller
             'level' => 'danger',
             'message' => 'Berhasil Menghapus Data <strong class="text-primary">'.$book->title.'</strong>'
         ]);
+    }
+
+    public function borrow(Book $book)
+    {
+        try {
+            auth()->user()->borrow($book);
+
+            Session::flash('flash_notification', [
+                'level'     => 'success',
+                'message'   => 'Berhasil meminjam buku '.$book->name,
+            ]);
+        } catch (ModelNotFoundException $e) {
+            Session::flash('flash_notification', [
+                'level'     => 'danger',
+                'message'   => 'Book Not found!!',
+            ]);
+        } catch (BookException $e) {
+            Session::flash('flash_notification', [
+                'level'     => 'danger',
+                'message'   => $e->getMessage(),
+            ]);
+        }
+        return redirect('/');
     }
 }

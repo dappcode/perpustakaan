@@ -2,6 +2,8 @@
 
 use App\Book;
 use App\Author;
+use App\User;
+use App\BorrowLog;
 use Illuminate\Database\Seeder;
 
 class BooksSeeder extends Seeder
@@ -41,6 +43,26 @@ class BooksSeeder extends Seeder
             'title' => 'Detective Conan',
             'amount' => 10,
             'author_id' => $author3->id,
+        ]);
+
+        $member = User::where('email', 'member@gmail.com')->first();
+
+        BorrowLog::create([
+            'user_id'       => $member->id,
+            'book_id'       => $book1->id,
+            'is_returned'   => 0
+        ]);
+
+        BorrowLog::create([
+            'user_id'       => $member->id, 
+            'book_id'       => $book2->id,
+            'is_returned'   => 0
+        ]);
+
+        BorrowLog::create([
+            'user_id'       => $member->id,
+            'book_id'       => $book3->id,
+            'is_returned'   => 1
         ]);
     }
 }
