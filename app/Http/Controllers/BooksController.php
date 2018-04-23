@@ -223,4 +223,23 @@ class BooksController extends Controller
         }
         return redirect('/');
     }
+
+    public function return(Book $book)
+    {
+        $borrowLog = BorrowLog::where('user_id', auth()->user()->id)
+                    ->where('book_id', $book->id)
+                    ->where('is_returned', 0)
+                    ->first();
+
+        if ($borrowLog) {
+            $borrowLog->is_returned = 1;
+            $borrowLog->save();
+
+            Session::flash('flash_notification', [
+                'level'     => 'success',
+                'message'   => 'Berhasil mengembalikan Buku '.$borrowLog->book->title, 
+            ]);
+        }
+        return redirect('/home');
+    }
 }
