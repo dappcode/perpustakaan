@@ -55,7 +55,13 @@
                         <div class="form-group row">
                             <label for="text" class="col-sm-2 col-form-label">Amounts of Books :</label>
                             <div class="col-sm-10">
-                                <input type="number" class="form-control{{ $errors->has('amount') ? ' is-invalid' : '' }}" id="amount" name="amount" value="{{ $book->amount }}">
+                            <input type="number" class="form-control{{ $errors->has('amount') ? ' is-invalid' : '' }} {{ $book->borrowed != 0 ? ' is-invalid' : '' }}" id="amount" name="amount" value="{{ $book->amount }}">
+                                @if (isset($book)) 
+                                {{-- @if($book->borrowed != 0) --}}
+                                <span class="invalid-feedback">
+                                    <strong class="text-danger"> {{ $book->borrowed }} Buku sedang di pinjam!!</strong>
+                                </span>
+                                @endif
                                 @if ($errors->has('amount'))
                                     <span class="invalid-feedback">
                                         <strong> {{ $errors->first('amount') }} </strong>

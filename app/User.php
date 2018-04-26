@@ -38,6 +38,8 @@ class User extends Authenticatable
 
     public function borrow(Book $book)
     {
+
+        
         if ($book->stock < 1) {
             throw new BookException("Mohon Maaf, Buku $book->title sedang tidak tersedia!");
         }
